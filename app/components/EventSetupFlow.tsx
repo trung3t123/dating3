@@ -20,7 +20,7 @@ function ScreenShell({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -12 }}
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className={`mx-auto flex h-dvh w-full max-w-md flex-col px-4 pb-[max(4.5rem,env(safe-area-inset-bottom))] pt-[calc(env(safe-area-inset-top)+1.5rem)] sm:max-w-lg sm:px-6 sm:pt-[calc(env(safe-area-inset-top)+2rem)] ${className}`}
+      className={`mx-auto flex h-dvh w-full max-w-md min-w-0 flex-col overflow-x-hidden px-4 pb-[max(4.5rem,env(safe-area-inset-bottom))] pt-[calc(env(safe-area-inset-top)+1.5rem)] sm:max-w-lg sm:px-6 sm:pt-[calc(env(safe-area-inset-top)+2rem)] ${className}`}
     >
       {children}
     </motion.div>
@@ -29,7 +29,7 @@ function ScreenShell({
 
 function TerminalCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="ui-drift flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-neutral-800/80 bg-neutral-950/60 p-6 shadow-[0_0_48px_rgba(110,231,160,0.08)] backdrop-blur-sm sm:p-7">
+    <div className="ui-drift flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-neutral-800/80 bg-neutral-950/60 p-6 shadow-[0_0_48px_rgba(110,231,160,0.08)] backdrop-blur-sm sm:p-7">
       {children}
     </div>
   );
@@ -112,10 +112,10 @@ export function EventSetupScreen({
 
       <ScreenShell>
         <TerminalCard>
-          <div className="relative min-h-0 flex-1">
-            <div className="card-scroll h-full max-h-[calc(100dvh-12rem)] overflow-y-auto overscroll-y-contain">
-              <div className="flex items-start justify-between gap-4">
-                <div>
+          <div className="relative min-h-0 min-w-0 flex-1">
+            <div className="card-scroll h-full max-h-[calc(100dvh-12rem)] overflow-x-hidden overflow-y-auto overscroll-y-contain">
+              <div className="flex min-w-0 items-start justify-between gap-4">
+                <div className="min-w-0 flex-1">
                   <p className="text-sm text-emerald-400/80 sm:text-base">
                     Software fixing date selection 📅
                   </p>
@@ -163,7 +163,7 @@ export function EventSetupScreen({
                   onChange={(e) =>
                     e.target.value && onSelectDate(e.target.value)
                   }
-                  className="w-full rounded-lg border border-neutral-800 bg-black/40 px-3 py-2.5 text-sm text-neutral-300 [color-scheme:dark] focus:border-emerald-900/50 focus:outline-none"
+                  className="w-full max-w-full min-w-0 rounded-lg border border-neutral-800 bg-black/40 px-3 py-2.5 text-sm text-neutral-300 [color-scheme:dark] focus:border-emerald-900/50 focus:outline-none"
                 />
               </label>
 
@@ -178,7 +178,7 @@ export function EventSetupScreen({
                 </p>
               </div>
 
-              <div className="mt-5 space-y-3 pb-2">
+              <div className="mt-5 min-w-0 space-y-3 pb-2">
                 <motion.button
                   type="button"
                   disabled={onlineDisabled}
