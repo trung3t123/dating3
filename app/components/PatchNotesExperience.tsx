@@ -4,11 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import HimMascot, { type MascotExpression } from "./HimMascot";
 
-import {
-  EventSetupScreen,
-  ExitScreen,
-  FinalScreen,
-} from "./EventSetupFlow";
+import { EventSetupScreen, ExitScreen, FinalScreen } from "./EventSetupFlow";
 import { submitEventConfig } from "@/lib/submit-event-config";
 
 type Phase = "boot" | "main" | "setup" | "final" | "exit";
@@ -17,7 +13,7 @@ const spring = { type: "spring" as const, stiffness: 140, damping: 22 };
 const softSpring = { type: "spring" as const, stiffness: 100, damping: 18 };
 
 const BOOT_LOGS = [
-  "reviewing last night's incident report...",
+  "reviewing last date's incident report...",
   "recalibrating clinginess levels...",
   "flagging questionable bar selection 🍺",
   "patching missed tired signals...",
@@ -391,7 +387,11 @@ function BootScreen({
                     "0 0 12px rgba(110,231,160,0.06)",
                   ],
                 }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 className="mt-6 w-full rounded-lg border border-emerald-900/40 bg-emerald-950/20 px-4 py-3.5 text-sm text-emerald-400/80 transition-colors hover:border-emerald-700/50 hover:text-emerald-300"
               >
                 [ open changelog ]
@@ -840,59 +840,59 @@ export default function PatchNotesExperience() {
       </AnimatePresence>
 
       <div className="scanline terminal-flicker relative min-h-dvh overflow-hidden bg-[#050505]">
-      <div className="ambient-glow pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(110,231,160,0.06),transparent_60%)]" />
-      <FloatingParticles />
-      <AmbientHum />
+        <div className="ambient-glow pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(110,231,160,0.06),transparent_60%)]" />
+        <FloatingParticles />
+        <AmbientHum />
 
-      <div className="relative z-10 flex h-dvh w-full items-stretch justify-center overflow-hidden">
-        <AnimatePresence mode="wait">
-          {phase === "boot" && (
-            <BootScreen
-              key="boot"
-              onOpenChangelog={() => setPhase("main")}
-              playTick={playTick}
-            />
-          )}
-          {phase === "main" && (
-            <motion.div
-              key="main"
-              className="flex h-dvh w-full flex-col"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.5 }}
-            >
-              <PatchNotesCard onContinue={() => setPhase("setup")} />
-            </motion.div>
-          )}
-          {phase === "setup" && (
-            <EventSetupScreen
-              key="setup"
-              selectedDate={selectedDate}
-              onSelectDate={setSelectedDate}
-              onSubmit={handleSubmitConfig}
-              submitting={submitting}
-            />
-          )}
-          {phase === "final" && (
-            <FinalScreen
-              key="final"
-              onRereadChangelog={() => setPhase("main")}
-              onExit={() => setPhase("exit")}
-            />
-          )}
-        </AnimatePresence>
-        {phase === "exit" && <ExitScreen key="exit" />}
-      </div>
-
-      {showFooter && (
-        <div className="pointer-events-none fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-0 right-0 z-20 text-center">
-          <p className="text-[9px] tracking-widest text-neutral-800">
-            him.exe · build 1.0.3 · 2026
-          </p>
+        <div className="relative z-10 flex h-dvh w-full items-stretch justify-center overflow-hidden">
+          <AnimatePresence mode="wait">
+            {phase === "boot" && (
+              <BootScreen
+                key="boot"
+                onOpenChangelog={() => setPhase("main")}
+                playTick={playTick}
+              />
+            )}
+            {phase === "main" && (
+              <motion.div
+                key="main"
+                className="flex h-dvh w-full flex-col"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.5 }}
+              >
+                <PatchNotesCard onContinue={() => setPhase("setup")} />
+              </motion.div>
+            )}
+            {phase === "setup" && (
+              <EventSetupScreen
+                key="setup"
+                selectedDate={selectedDate}
+                onSelectDate={setSelectedDate}
+                onSubmit={handleSubmitConfig}
+                submitting={submitting}
+              />
+            )}
+            {phase === "final" && (
+              <FinalScreen
+                key="final"
+                onRereadChangelog={() => setPhase("main")}
+                onExit={() => setPhase("exit")}
+              />
+            )}
+          </AnimatePresence>
+          {phase === "exit" && <ExitScreen key="exit" />}
         </div>
-      )}
-    </div>
+
+        {showFooter && (
+          <div className="pointer-events-none fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-0 right-0 z-20 text-center">
+            <p className="text-[9px] tracking-widest text-neutral-800">
+              him.exe · build 1.0.3 · 2026
+            </p>
+          </div>
+        )}
+      </div>
     </>
   );
 }
