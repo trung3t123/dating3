@@ -519,11 +519,26 @@ function PatchNotesCard({ onContinue }: { onContinue: () => void }) {
   const [footerTaps, setFooterTaps] = useState(0);
   const [canContinue, setCanContinue] = useState(false);
   const toastIndex = useRef(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setCanContinue(true), 8000);
     return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    if (!debugOpen) return;
+    const scrollToBottom = () => {
+      const el = scrollContainerRef.current;
+      if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+    };
+    const t1 = setTimeout(scrollToBottom, 380);
+    const t2 = setTimeout(scrollToBottom, 700);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [debugOpen]);
 
   const showToast = useCallback(() => {
     const msg = TOAST_MESSAGES[toastIndex.current % TOAST_MESSAGES.length];
@@ -585,7 +600,10 @@ function PatchNotesCard({ onContinue }: { onContinue: () => void }) {
           </div>
 
           <div className="relative min-h-0 flex-1">
-            <div className="card-scroll h-full overflow-y-auto overscroll-y-contain">
+            <div
+              ref={scrollContainerRef}
+              className="card-scroll h-full overflow-y-auto overscroll-y-contain"
+            >
               <div className="p-6 pt-4 sm:p-7 sm:pt-5">
                 <div className="space-y-3">
                   {PATCH_CATEGORIES.map((cat, i) => (
