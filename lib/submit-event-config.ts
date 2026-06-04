@@ -22,17 +22,24 @@ export async function submitEventConfig(config: {
 
   const supabase = createSupabaseBrowserClient();
 
-  if (supabase) {
-    const row: EventSubmissionRow = {
-      event_date: config.date,
-      viewing_mode: config.viewingMode,
+  if (!supabase) {
+    return {
+      ok: false,
+      error:
+        "Supabase not configured — set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY",
     };
+  }
 
-    const { error } = await supabase.from("event_submissions").insert(row);
+  const row: EventSubmissionRow = {
+    event_date: config.date,
+    viewing_mode: config.viewingMode,
+  };
 
-    if (error) {
-      return { ok: false, error: error.message };
-    }
+  const { error } = await supabase.from("event_submissions").insert(row);
+
+  if (error) {
+    console.error("[submitEventConfig]", error);
+    return { ok: false, error: error.message };
   }
 
   try {
