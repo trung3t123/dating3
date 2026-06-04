@@ -43,6 +43,13 @@ function formatChipDate(date: Date) {
   });
 }
 
+function toLocalDateInputValue(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 export function EventSetupScreen({
   selectedDate,
   onSelectDate,
@@ -69,7 +76,10 @@ export function EventSetupScreen({
     return Array.from({ length: 3 }, (_, i) => {
       const d = new Date(today);
       d.setDate(today.getDate() + i + 1);
-      return { iso: d.toISOString().slice(0, 10), label: formatChipDate(d) };
+      return {
+        iso: toLocalDateInputValue(d),
+        label: formatChipDate(d),
+      };
     });
   }, []);
 
@@ -159,7 +169,7 @@ export function EventSetupScreen({
                 <input
                   type="date"
                   value={selectedDate ?? ""}
-                  min={new Date().toISOString().slice(0, 10)}
+                  min={toLocalDateInputValue(new Date())}
                   onChange={(e) =>
                     e.target.value && onSelectDate(e.target.value)
                   }
